@@ -2,7 +2,7 @@
 export const getUser = (req, res) => {
     let { user, pass } = req.query;
     console.log(user,pass)
-    if (user === 'admin' && pass === 'admin') {
+    if (user === process.env.ADMIN_USER && pass === process.env.ADMIN_PASS) {
         return res.send('Welcome Admin');
     }
     else {

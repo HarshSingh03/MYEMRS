@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import helmet from 'helmet';
 import cors from 'cors';
 import dbConnect from './services/dbConnect.js';
-import userRoutes from './user/user.routes.js';
+import userRoutes from './user/userRoutes.js';
 
 
 
