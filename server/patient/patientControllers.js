@@ -4,7 +4,7 @@ export const createPatient = async (req, res) => {
     try {
         const { name, dob, contact, address, condition, treatment, status } = req.body;
         if (!name || !dob || !contact || !address || !condition || !treatment || !status) {
-            return Error('Please fill all the fields');
+            throw new Error('Please fill all the fields');
         }
         const newPatient = await Patients.create({
             name,
@@ -20,7 +20,7 @@ export const createPatient = async (req, res) => {
     }
     catch (err) {
         console.log(err.message);
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: err.message });
     }
 
 }
@@ -32,7 +32,7 @@ export const getAllPatients = async (req, res) => {
     }
     catch (err) {
         console.log(err.message);
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: err.message });
     }
 }
 
