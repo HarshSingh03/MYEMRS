@@ -6,6 +6,7 @@ import cors from 'cors';
 import dbConnect from './services/dbConnect.js';
 import userRoutes from './user/userRoutes.js';
 import patientRoutes from './patient/patientRoutes.js';
+import errorHandler from './ErrorHandler.js';
 
 
 
@@ -25,6 +26,8 @@ app.use('/patient', patientRoutes);
 //     console.log("Hello World");
 //     return res.send("Hello World");
 // })
+
+app.use(errorHandler)
 
 
 
