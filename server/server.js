@@ -1,11 +1,12 @@
+
 import 'dotenv/config';
 import express from 'express';
-import mongoose from 'mongoose';
 import helmet from 'helmet';
 import cors from 'cors';
 import dbConnect from './services/dbConnect.js';
 import userRoutes from './user/userRoutes.js';
 import patientRoutes from './patient/patientRoutes.js';
+
 
 
 
