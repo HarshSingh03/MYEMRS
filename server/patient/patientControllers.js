@@ -6,7 +6,7 @@ export const createPatient = async (req, res) => {
         if (!name || !dob || !contact || !address || !condition || !treatment || !status) {
             return Error('Please fill all the fields');
         }
-        const newPatient = new Patients({
+        const newPatient = await Patients.create({
             name,
             dob,
             contact,
@@ -16,13 +16,11 @@ export const createPatient = async (req, res) => {
             status
         });
 
-
-        await newPatient.save();
-        res.status(201).json(newPatient);
+        return res.status(201).json(newPatient);
     }
-    catch (error) {
+    catch (err) {
         console.log(err.message);
-        res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.message });
     }
 
 }
@@ -30,11 +28,11 @@ export const createPatient = async (req, res) => {
 export const getAllPatients = async (req, res) => {
     try {
         const patients = await Patients.find();
-        res.status(200).json(patients);// return all patients
+        return res.status(200).json({ count: patients.length, patients });// return all patients
     }
     catch (err) {
         console.log(err.message);
-        res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.message });
     }
 }
 
@@ -46,10 +44,44 @@ export const getPatient = async (req, res) => {
         if (!patient) {
             throw new Error('Patient not found');
         }
-        res.status(200).json(patient);
+        return res.status(200).json(patient);
     }
     catch (err) {
         console.log(err.message)
-        res.status(400).json({ message: err.message })
+        return res.status(400).json({ message: err.message })
+    }
+}
+
+export const deletePatientById = async (req, res) => {
+    try {
+
+        const { id } = req.params;
+        const patient = await Patients.findByIdAndDelete(id);
+        if (!patient) {
+            throw new Error('Patient not found');
+        }
+        return res.status(200).json({ message: 'Patient deleted successfully' });
+    }
+    catch (err) {
+        console.log(err.message);
+        return res.status(400).json({ message: err.message });
+    }
+
+}
+
+export const updatePatient = async (req, res) => {
+    try {
+        const { name, dob, contact, address, condition, treatment, status } = req.body;
+        const { id } = req.params;
+        const currentPatientInfo = await Patients.findById(id);
+        if (!currentPatientInfo) {
+            throw new Error("Patient does not exist.")
+        }
+        const newPatient = { ...currentPatientInfo.toObject(), name, dob, contact, address, condition, treatment, status };
+        const updatePatient = await Patients.findOneAndReplace({_id:id}, newPatient, { new: true });
+        return res.status(200).json(updatePatient);
+    } catch (err) {
+        console.log(err.message);
+        return res.status(400).json({ message: err.message });
     }
 }
