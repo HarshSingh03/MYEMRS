@@ -14,11 +14,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 3,
-    },
-    userType: {
-        type: String,
-        required: true,
-        enum: ["admin", "staff"] // only admin and user are allowed
+        select:false
     }
 }, { timestamps: true, strict: false });
 

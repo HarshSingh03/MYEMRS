@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import dbConnect from './services/dbConnect.js';
 import userRoutes from './user/userRoutes.js';
 import patientRoutes from './patient/patientRoutes.js';
+import adminRoutes from './admin/adminRoutes.js'
 import errorHandler from './ErrorHandler.js';
 
 
@@ -23,6 +24,7 @@ app.use(cookieParser())
 
 app.use('/user', userRoutes);
 app.use('/patient', patientRoutes);
+app.use('/admin', adminRoutes)
 
 
 // app.get('/', (req, res) => {
