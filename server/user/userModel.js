@@ -1,24 +1,38 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+import bcrypt, { genSalt } from "bcrypt";
 
 const userSchema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     contact: { type: String, minlength: 2, maxlength: 15 },
     address: { type: String },
     dob: { type: Date, required: true },
-    doa: {
-        type: Date,
-        required: true,
-        default: Date.now,
-    },
     password: {
         type: String,
-        requird: true,
-        minlength: 8,
+        required: true,
+        minlength: 3,
+    },
+    userType: {
+        type: String,
+        required: true,
+        enum: ["admin", "staff"] // only admin and user are allowed
     }
 }, { timestamps: true, strict: false });
 
-export default User = mongoose.model("User", userSchema);//export the model
+
+userSchema.pre('save', async function () {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+})
+
+userSchema.methods.matchPassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
+}
+
+
+export default mongoose.model("User", userSchema);//export the model
+
+

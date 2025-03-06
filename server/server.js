@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
 
-app.use('/login', userRoutes);
+app.use('/user', userRoutes);
 app.use('/patient', patientRoutes);
 
 
