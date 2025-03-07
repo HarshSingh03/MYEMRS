@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 3,
-        select: false
+        // select: false
     }
 }, { timestamps: true, strict: false });
 
@@ -25,12 +25,8 @@ userSchema.pre('save', async function () {
 })
 
 userSchema.methods.matchPassword = async function (password) {
-    try {
-        return await bcrypt.compare(password, this.password);
-    }
-    catch (error) {
-        throw new Error('Match password failed.')
-    }
+    return bcrypt.compare(password, this.password);
+
 }
 
 

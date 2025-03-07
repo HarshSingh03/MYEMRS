@@ -1,12 +1,24 @@
 import asyncHandler from 'express-async-handler';
+import User from './userModel.js';
+import { generateToken } from '../services/jwt.js';
 
-export const getUser = asyncHandler(async (req, res) => {
-    let { user, pass } = req.query;
-    console.log(user, pass)
-    if (user === process.env.ADMIN_USER && pass === process.env.ADMIN_PASS) {
-        return res.send('Welcome Admin');
+export const login = asyncHandler(async (req, res) => {
+    const { username, password } = req.body;
+    const validUser = await User.findOne({ username: username });
+    if (!validUser) {
+        throw new Error(`Invalid User Credentials ${username} is not a user.`)
     }
-    else {
-        return res.status(401).send('Invalid Credentials');
+    const passMatch = validUser.matchPassword(password);
+    if (!passMatch) {
+        throw new Error(`Invalid Password`);
     }
+
+    const token = generateToken(validUser._id);
+    res.cookie('jwt', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
+    return res.status(200).json({ message: "Logged In Successfully", token })
+
+})
+
+export const logout = asyncHandler(async (req, res) => {
+    return res.status(200).json({ message: "Logged Out Successfully" }).clearCookie('jwt');
 })
