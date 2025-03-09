@@ -4,6 +4,9 @@ import { generateToken } from '../services/jwt.js';
 
 export const login = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
+    if (!username || !password) {
+        throw new Error(`Invalid User Credentials`);
+    }
     const validUser = await User.findOne({ username: username });
     if (!validUser) {
         throw new Error(`Invalid User Credentials ${username} is not a user.`)
@@ -20,5 +23,6 @@ export const login = asyncHandler(async (req, res) => {
 })
 
 export const logout = asyncHandler(async (req, res) => {
-    return res.status(200).json({ message: "Logged Out Successfully" }).clearCookie('jwt');
+    res.clearCookie('jwt');
+    return res.status(200).json({ message: "Logged Out Successfully" });
 })

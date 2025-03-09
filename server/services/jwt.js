@@ -10,12 +10,12 @@ export const generateToken = (userId) => {
 }
 
 export const verifyToken = (token) => {
-    try {
+        if (!token){
+            throw new Error('Token not found');
+        }
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         return decoded;
-    } catch (error) {
-        throw new Error('Token Verification Failed')
-    }
+    
 }
 
 

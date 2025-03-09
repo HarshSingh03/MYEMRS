@@ -10,6 +10,7 @@ import userRoutes from './user/userRoutes.js';
 import patientRoutes from './patient/patientRoutes.js';
 import adminRoutes from './admin/adminRoutes.js'
 import errorHandler from './ErrorHandler.js';
+import {authMiddleware} from './services/authMiddleware.js'
 
 
 morgan('tiny');
@@ -23,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
 
 app.use('/user', userRoutes);
-app.use('/patient', patientRoutes);
+app.use('/patient',authMiddleware, patientRoutes);
 app.use('/admin', adminRoutes)
 
 

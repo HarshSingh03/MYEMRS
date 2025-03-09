@@ -1,11 +1,12 @@
-import { verifyToken } from "./jwt";
-import User from "../user/userModel";
+import { verifyToken } from "./jwt.js";
+import User from "../user/userModel.js";
 
-export const authMiddleware = (req, res, next) => {
+export const authMiddleware = async (req, res, next) => {
     const token = req.cookies.jwt;
-    const userId = verifyToken(token.payload);
-    if (isValid) {
-        const user = User.findById(userId);
+    const userId = verifyToken(token)?.payload;
+    if (userId) {
+        const user = await User.findById(userId);
+        console.log(user)
         if (!user) {
             throw new Error('User no longer exists');
         }
@@ -17,6 +18,6 @@ export const authMiddleware = (req, res, next) => {
     else {
         throw new Error('Invalid token');
     }
-    next();
+    // next();
 }
 
