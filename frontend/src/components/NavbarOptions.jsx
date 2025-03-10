@@ -1,73 +1,22 @@
 import React from "react";
+import { options } from "../content/pageOptionsArray.jsx";
 
-function NavbarOptions({user="loggedOut"}) {
-  function returnOptions(user){
-    if (user === 'admin'){
+function NavbarOptions({ user = "loggedOut", setContent }) {
+  function returnOptions(user) {
+    if (user === 'admin') {
       return options.admin;
     }
-    else if (user === 'loggedIn'){
+    else if (user === 'loggedIn') {
       return options.loggedIn;
     }
     else
       return options.loggedOut;
   }
-  const options = {
-    loggedIn: [
-      {
-        name: "All Patients",
-        element: <></>,
-      },
-      {
-        name: "Search Patients",
-        element: <></>,
-      },
-      {
-        name: "Create Patients",
-        element: <></>,
-      },
-      {
-        name: "Delete Patients",
-        element: <></>,
-      },
-    ],
-    loggedOut:[
-      {
-        name: "All Patients",
-        element: <></>,
-      },
-      {
-        name: "Search Patients",
-        element: <></>,
-      },
-    ],
-    admin:[
-      {
-        name:'All Users',
-        patients:<></>
-      },
-      {
-        name:'Find User',
-        patients:<></>
-      },
-      {
-        name:'Create User',
-        patients:<></>
-      },
-      {
-        name:'Update User',
-        patients:<></>
-      },
-      {
-        name:'Delete User',
-        patients:<></>
-      }
-    ]
-  };
-  return <div className="flex flex-row gap-1.5">
+  return <div className="flex flex-row gap-4 ">
     {
-      returnOptions(user).map(option => <div key={Math.random()} >
-          {option.name}
-        </div> )
+      returnOptions(user).map((option, index) => <div onClick={(index) => setContent(index)} key={index} >
+        {option.name}
+      </div>)
     }
   </div>;
 }

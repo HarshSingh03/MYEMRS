@@ -1,11 +1,19 @@
-import React from 'react'
-import Navbar from '../components/Navbar'
+import React, { useState } from 'react'
+import Navbar from '../components/Navbar.jsx'
+import { options } from '../content/pageOptionsArray.jsx'
+import { useContext } from 'react';
 
 function PatientsPage() {
+  const [content, setContent] = useState(0);
+  const display = options["loggedOut"];
+
   return (<>
-  <Navbar user="admin"/>
-  
-  <div>PatientsPage</div>
+    <Navbar user="loggedOut" setContent={setContent} />
+    <div>
+
+
+    </div>
+    <div>PatientsPage</div>
   </>
   )
 }
